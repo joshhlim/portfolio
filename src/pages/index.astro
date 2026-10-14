@@ -1,0 +1,18 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base title="Home">
+<section class="hero"><div class="reveal">
+<p class="eyebrow">AI Engineer · Singapore</p>
+<h1>Hi, I'm Josh. I build practical AI tools that make work easier.</h1>
+<p class="tagline">"Increasing the efficiency and outreach of Healthcare, one build at a time."</p>
+<p class="mut lead">I'm an AI Engineer at Ng Teng Fong General Hospital and a 2026 Business Analytics graduate of NUS School of Computing. I enjoy turning messy data and documents into tools people actually use, from document-understanding pipelines to interactive analytics apps.</p>
+<div class="cta"><a class="btn" href="/projects">View projects</a><a class="btn ghost" href="/contact">Get in touch</a></div></div>
+<img class="reveal av" src="/img/avatar.svg" alt="Josh Lim avatar placeholder"/></section>
+<section class="grid stats">
+<div class="card reveal"><p class="eyebrow">Now</p><h3>AI Engineer</h3><p class="mut">Ng Teng Fong General Hospital</p></div>
+<div class="card reveal"><p class="eyebrow">Previously</p><h3>InsourceAI · ByteDance</h3><p class="mut">AI engineering and risk analytics</p></div>
+<div class="card reveal"><p class="eyebrow">Education</p><h3>NUS, Business Analytics</h3><p class="mut">School of Computing, class of 2026</p></div>
+</section>
+<style>.hero{display:grid;grid-template-columns:1.6fr 1fr;gap:48px;align-items:center;padding:40px 0 64px}.tagline{font-size:1.2rem;font-style:italic;color:var(--acc);margin:0 0 14px}.lead{font-size:1.12rem;max-width:600px}.cta{display:flex;gap:12px;margin-top:28px}.av{width:100%;max-width:280px;justify-self:center;animation:float 6s ease-in-out infinite}@keyframes float{50%{translate:0 -10px}}@media(max-width:760px){.hero{grid-template-columns:1fr}.av{max-width:180px;grid-row:1}}</style>
+</Base>

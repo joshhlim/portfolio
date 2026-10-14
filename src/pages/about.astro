@@ -1,0 +1,20 @@
+---
+import Base from '../layouts/Base.astro';
+const pro=[['3D computer vision','Exploring how machines perceive and reconstruct the 3D world.'],['AI in everyday life','Learning to use AI more effectively in my own personal life.']];
+const hobbies=[['Guitar','Picking up the guitar whenever I get the chance.'],['Music','Listening to and enjoying music of all kinds.'],['Social games','Social gambling with friends over Big Two and Mahjong, the inspiration behind GamBROle.']];
+const skills=['Python','TypeScript','FastAPI','Flask','Streamlit','scikit-learn','NumPy','pandas','Jupyter','SQL / SQLite','Supabase','Dashboards','ETL pipelines','Vercel / Render','pytest · ruff · mypy','CI'];
+---
+<Base title="About">
+<p class="eyebrow reveal">About</p><h1 class="reveal">A bit about me</h1>
+<p class="mut reveal" style="max-width:680px;font-size:1.08rem">I studied Business Analytics at NUS School of Computing and now work as an AI Engineer at Ng Teng Fong General Hospital. My path runs through risk analytics at ByteDance and AI engineering at the startup InsourceAI, so I care about both the model and the decisions it supports.</p>
+<h2 class="reveal" style="margin-top:56px">Education</h2>
+<div class="card reveal"><div class="row"><div><h3>National University of Singapore</h3><p class="mut" style="margin:0">Bachelor of Science in Business Analytics, School of Computing</p></div><span class="mut">Graduated 2026</span></div>
+<p style="margin-bottom:0">Relevant coursework: BT4221 and BT3017 (see Projects).</p></div>
+<h2 class="reveal" style="margin-top:56px">Professional interests</h2>
+<div class="grid">{pro.map(([t,d])=><div class="card reveal"><h3>{t}</h3><p class="mut" style="margin:0">{d}</p></div>)}</div>
+<h2 class="reveal" style="margin-top:56px">Hobbies</h2>
+<div class="grid">{hobbies.map(([t,d])=><div class="card reveal"><h3>{t}</h3><p class="mut" style="margin:0">{d}</p></div>)}</div>
+<h2 class="reveal" style="margin-top:56px">Skills</h2>
+<div class="reveal">{skills.map(s=><span class="tag">{s}</span>)}</div>
+<style>.row{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:12px}</style>
+</Base>

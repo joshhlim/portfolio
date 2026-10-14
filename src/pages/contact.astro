@@ -1,0 +1,9 @@
+---
+import Base from '../layouts/Base.astro';
+const cs=[['LinkedIn','linkedin.com/in/joshhlim','https://www.linkedin.com/in/joshhlim'],['GitHub','github.com/joshhlim','https://github.com/joshhlim'],['Email','joshhlim2606@gmail.com','mailto:joshhlim2606@gmail.com']];
+---
+<Base title="Contact">
+<p class="eyebrow reveal">Contact</p><h1 class="reveal">Let's talk</h1>
+<p class="mut reveal" style="max-width:600px;font-size:1.08rem">I'm always happy to talk about applied AI, data and interesting problems. Reach out on any of these:</p>
+<div class="grid" style="margin-top:36px">{cs.map(([k,v,h])=><a class="card reveal" href={h} target={h.startsWith('mailto')?undefined:'_blank'}><p class="eyebrow">{k}</p><h3 style="color:var(--fg)">{v}</h3><p class="mut" style="margin:0">Open ↗</p></a>)}</div>
+</Base>
