@@ -1,16 +1,18 @@
 ---
 import Base from '../layouts/Base.astro';
-const ps=[
-{n:'GamBROle',img:'/img/gambrole.png',d:'Score keeping and settlements for Big Two (Taidi) and Mahjong nights. It has configurable house rules, multiplayer rooms where everyone plays from their own phone, and lifetime analytics.',t:['Python','FastAPI','TypeScript','Supabase','Vercel'],live:'https://gambrole.vercel.app',gh:'https://github.com/joshhlim/gambrole'},
-{n:'Steam Review Recommendation Analysis',img:'/img/BT4221-Project-Steam-Reviews.png',d:'BT4221 team project on which features drive whether a Steam review recommends a game. It focuses on interpretability and compares a manual ML pipeline with an LLM-assisted agentic pipeline.',t:['Python','Jupyter','ML','LLM agents'],gh:'https://github.com/joshhlim/BT4221-Project-Steam-Reviews'},
-{n:'ML Concept Lab',img:'/img/BT3017-ML-Concept-Lab.png',d:'Interactive web app for learning the Kernel Trick, PCA, Spectral Clustering and GNNs. Each lab has an animated explainer, a live sandbox and a quiz.',t:['Flask','scikit-learn','NumPy','JavaScript'],gh:'https://github.com/joshhlim/BT3017-ML-Concept-Lab'},
-{n:'Taidi Tracker',img:'/img/taidi-tracker.png',d:'The original Python tracker for lifetime Big Two stats, and the precursor to GamBROle.',t:['Python'],gh:'https://github.com/joshhlim/taidi-tracker'},
-];
+const tags=['Python','FastAPI','TypeScript','Supabase','Vercel','Render','pytest'];
+const feats=[['Configurable house rules','Scoring for Big Two (Taidi) and Mahjong, set up to match how each group plays.'],['Multiplayer rooms','Everyone joins from their own phone and the scores stay in sync.'],['Lifetime analytics','Tracks stats and settlements across every game night.']];
 ---
 <Base title="Projects">
 <p class="eyebrow reveal">Projects</p><h1 class="reveal">Things I've built</h1>
-<div class="grid" style="margin-top:40px">{ps.map(p=><article class="card pc reveal"><div class="im"><img src={p.img} alt={p.n+' preview'} loading="lazy"/></div>
-<div class="bd"><h3>{p.n}</h3><p class="mut">{p.d}</p><div>{p.t.map(t=><span class="tag">{t}</span>)}</div>
-<div class="lk">{p.live && <a href={p.live} target="_blank">Live ↗</a>}<a href={p.gh} target="_blank">GitHub ↗</a></div></div></article>)}</div>
-<style>.pc{padding:0;overflow:hidden;display:flex;flex-direction:column}.im{aspect-ratio:16/9;overflow:hidden;background:#f3f4f6;border-bottom:1px solid var(--line)}.im img{width:100%;height:100%;object-fit:cover;transition:transform .5s}.pc:hover .im img{transform:scale(1.04)}.bd{padding:22px}.lk{display:flex;gap:16px;margin-top:16px;font-weight:500}</style>
+<article class="card feat reveal">
+<div class="im"><img src="/img/gambrole.png" alt="GamBROle preview"/></div>
+<div class="bd"><p class="eyebrow">Featured</p><h2>GamBROle</h2>
+<p class="mut">Score keeping and settlements for Big Two (Taidi) and Mahjong nights. It started as <a href="https://github.com/joshhlim/taidi-tracker" target="_blank">taidi-tracker</a>, a small Python script for lifetime Taidi stats, and grew into a full multiplayer web app.</p>
+<div>{tags.map(t=><span class="tag">{t}</span>)}</div>
+<div class="lk"><a class="btn" href="https://gambrole.vercel.app" target="_blank">Live app ↗</a><a class="btn ghost" href="https://github.com/joshhlim/gambrole" target="_blank">GitHub ↗</a></div></div>
+</article>
+<div class="grid fs">{feats.map(([t,d])=><div class="card reveal"><h3>{t}</h3><p class="mut" style="margin:0">{d}</p></div>)}</div>
+<p class="mut reveal more">More projects coming soon. In the meantime, see <a href="https://github.com/joshhlim" target="_blank">GitHub</a>.</p>
+<style>.feat{display:grid;grid-template-columns:1.2fr 1fr;padding:0;overflow:hidden;margin-top:40px}.im{overflow:hidden;background:#f3f4f6;border-right:1px solid var(--line);min-height:320px}.im img{width:100%;height:100%;object-fit:cover;transition:transform .6s}.feat:hover .im img{transform:scale(1.04)}.bd{padding:36px}.bd h2{margin:4px 0 12px}.lk{display:flex;gap:12px;margin-top:24px}.fs{margin-top:20px}.more{margin-top:40px;text-align:center}@media(max-width:800px){.feat{grid-template-columns:1fr}.im{border-right:0;border-bottom:1px solid var(--line);min-height:200px}}</style>
 </Base>

@@ -1,5 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
+const certs=[{n:'AWS Certified Cloud Practitioner',i:'Amazon Web Services Training and Certification',d:'Earned July 2026',u:'https://www.credly.com/badges/58187e27-5848-41bd-96bb-a3ae56c506bc/public_url'}];
+const wip=[{n:'AWS Certified Solutions Architect – Associate (SAA-C03)',i:'Amazon Web Services',d:'In progress: enrolled in the exam prep plan'}];
 const pro=[['3D computer vision','Exploring how machines perceive and reconstruct the 3D world.'],['AI in everyday life','Learning to use AI more effectively in my own personal life.']];
 const hobbies=[['Guitar','Picking up the guitar whenever I get the chance.'],['Music','Listening to and enjoying music of all kinds.'],['Social games','Social gambling with friends over Big Two and Mahjong, the inspiration behind GamBROle.']];
 const skills=['Python','TypeScript','FastAPI','Flask','Streamlit','scikit-learn','NumPy','pandas','Jupyter','SQL / SQLite','Supabase','Dashboards','ETL pipelines','Vercel / Render','pytest · ruff · mypy','CI'];
@@ -9,12 +11,15 @@ const skills=['Python','TypeScript','FastAPI','Flask','Streamlit','scikit-learn'
 <p class="mut reveal" style="max-width:680px;font-size:1.08rem">I studied Business Analytics at NUS School of Computing and now work as an AI Engineer at Ng Teng Fong General Hospital. My path runs through risk analytics at ByteDance and AI engineering at the startup InsourceAI, so I care about both the model and the decisions it supports.</p>
 <h2 class="reveal" style="margin-top:56px">Education</h2>
 <div class="card reveal"><div class="row"><div><h3>National University of Singapore</h3><p class="mut" style="margin:0">Bachelor of Science in Business Analytics, School of Computing</p></div><span class="mut">Graduated 2026</span></div>
-<p style="margin-bottom:0">Relevant coursework: BT4221 and BT3017 (see Projects).</p></div>
+</div>
+<h2 class="reveal" style="margin-top:56px">Certifications</h2>
+<div class="grid">{certs.map(c=><a class="card reveal cert" href={c.u} target="_blank"><span class="badge">AWS</span><div><h3 style="color:var(--fg)">{c.n}</h3><p class="mut" style="margin:0">{c.i}</p><p class="cd">{c.d} · Verify on Credly ↗</p></div></a>)}
+{wip.map(c=><div class="card reveal cert wip"><span class="badge">AWS</span><div><h3>{c.n}</h3><p class="mut" style="margin:0">{c.i}</p><p class="cd">{c.d}</p></div></div>)}</div>
 <h2 class="reveal" style="margin-top:56px">Professional interests</h2>
 <div class="grid">{pro.map(([t,d])=><div class="card reveal"><h3>{t}</h3><p class="mut" style="margin:0">{d}</p></div>)}</div>
 <h2 class="reveal" style="margin-top:56px">Hobbies</h2>
 <div class="grid">{hobbies.map(([t,d])=><div class="card reveal"><h3>{t}</h3><p class="mut" style="margin:0">{d}</p></div>)}</div>
 <h2 class="reveal" style="margin-top:56px">Skills</h2>
 <div class="reveal">{skills.map(s=><span class="tag">{s}</span>)}</div>
-<style>.row{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:12px}</style>
+<style>.cert{display:flex;gap:16px;align-items:flex-start}.badge{flex:none;width:48px;height:48px;border-radius:12px;background:#fff7ed;color:#c2410c;font-weight:700;font-size:.8rem;display:grid;place-items:center;border:1px solid #fed7aa}.cd{margin:10px 0 0;font-size:.88rem;color:var(--acc);font-weight:500}.wip{border-style:dashed}.wip .cd{color:var(--mut)}.row{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:12px}</style>
 </Base>
