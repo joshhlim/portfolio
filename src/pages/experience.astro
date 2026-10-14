@@ -1,7 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 const xp=[
-{role:'AI Engineer',org:'Ng Teng Fong General Hospital',when:'2026 – Present',loc:'Singapore',pts:['"Increasing the efficiency and outreach of Healthcare, one build at a time."']},
+{role:'AI Engineer',org:'Ng Teng Fong General Hospital',when:'2026 – Present',loc:'Singapore',pts:['"Increasing the efficiency and outreach of Healthcare, one build at a time."','Building a staff rostering system with constraint programming, now in UAT.','Developing CarePal, an assistant for post-discharge patient calls, and a multilingual patient-facing avatar on Azure.','Created an enterprise RAG bot that guides users through Synapxe\'s AgentSea platform.'],more:true},
 {role:'AI Engineer',org:'InsourceAI',when:'Aug 2025 – Jan 2026',loc:'Internship · Startup',pts:['Built AI tools that extract text from documents and interpret the contents.','Used the extracted and interpreted information to generate bills automatically.']},
 {role:'Risk Analyst',org:'ByteDance',when:'Jan 2025 – Jul 2025',loc:'Internship',pts:['Built dashboards to track key risk signals.','Ran both high-level and deep-dive data analyses to surface trends and issues.','Drafted reports and shared findings with relevant stakeholders.','Monitored risk on an ongoing basis and took action when issues came up.']},
 ];
@@ -10,7 +10,7 @@ const xp=[
 <p class="eyebrow reveal">Experience</p><h1 class="reveal">Where I've worked</h1>
 <ol class="tl">{xp.map(x=><li class="reveal"><span class="dot"></span><div class="card">
 <div class="row"><div><h3>{x.role}</h3><p class="org">{x.org} <span class="mut">· {x.loc}</span></p></div><span class="mut when">{x.when}</span></div>
-{x.pts ? <ul>{x.pts.map(p=><li>{p}</li>)}</ul> : <p class="ph" style="display:inline-block">[Responsibilities and start month: to be added]</p>}
+{x.pts ? <><ul>{x.pts.map(p=><li>{p}</li>)}</ul>{x.more && <a class="mlink" href="/projects">See work projects →</a>}</> : <p class="ph" style="display:inline-block">[Responsibilities and start month: to be added]</p>}
 </div></li>)}</ol>
-<style>.tl{list-style:none;padding:0 0 0 28px;margin:40px 0 0;border-left:2px solid var(--line)}.tl>li{position:relative;margin-bottom:28px}.dot{position:absolute;left:-37px;top:28px;width:16px;height:16px;border-radius:50%;background:#fff;border:3px solid var(--acc)}.row{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}.org{margin:0;font-weight:500}.when{font-size:.9rem}ul{margin:14px 0 0;padding-left:20px}ul li{margin:4px 0}</style>
+<style>.mlink{display:inline-block;margin-top:12px;font-weight:500;font-size:.92rem}.tl{list-style:none;padding:0 0 0 28px;margin:40px 0 0;border-left:2px solid var(--line)}.tl>li{position:relative;margin-bottom:28px}.dot{position:absolute;left:-37px;top:28px;width:16px;height:16px;border-radius:50%;background:#fff;border:3px solid var(--acc)}.row{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}.org{margin:0;font-weight:500}.when{font-size:.9rem}ul{margin:14px 0 0;padding-left:20px}ul li{margin:4px 0}</style>
 </Base>
