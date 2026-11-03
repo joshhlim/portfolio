@@ -1,0 +1,32 @@
+---
+import Base from '../layouts/Base.astro';
+import ContributionGraph from '../components/ContributionGraph.astro';
+import github from '../data/github.json';
+import { about, now, pageDescriptions } from '../data/site';
+
+const formatDate = (value) => new Date(value).toLocaleDateString('en-GB', { timeZone: 'UTC', day: 'numeric', month: 'short', year: 'numeric' });
+const activeDays = github.days.filter((d) => d.count > 0).length;
+const sinceLabel = new Date(`${github.days[0].date}T00:00:00Z`).toLocaleDateString('en-GB', { timeZone: 'UTC', month: 'long', year: 'numeric' });
+---
+<Base title="Now" description={pageDescriptions.now}>
+<p class="eyebrow reveal">Now</p><h1 class="reveal">What I'm up to</h1>
+<p class="mut reveal upd">Last updated {formatDate(now.updated)}</p>
+
+<h2 class="reveal sec">Building</h2>
+<div class="grid">{now.building.map(b=><div class="card reveal"><h3>{b.url ? <a href={b.url} target="_blank">{b.title} ↗</a> : b.title}</h3><p class="mut" style="margin:0">{b.detail}</p></div>)}</div>
+
+<h2 class="reveal sec">Learning</h2>
+<div class="grid">{about.certificationsInProgress.map(c=><div class="card reveal"><h3>{c.name}</h3><p class="mut" style="margin:0">{c.status}</p></div>)}</div>
+
+<h2 class="reveal sec">Recent code</h2>
+<div class="card reveal act">
+<div class="stats"><div><strong>{github.total}</strong><span class="mut">contributions since {sinceLabel}</span></div><div><strong>{activeDays}</strong><span class="mut">active days</span></div></div>
+<ContributionGraph days={github.days} total={github.total}/>
+</div>
+<p class="mut reveal cap">Includes private repositories, which appear only as daily counts. Refreshed daily from <a href="https://github.com/joshhlim" target="_blank">GitHub</a>.</p>
+<div class="grid repos">{github.repos.map(r=><a class="card reveal" href={r.url} target="_blank"><h3>{r.name} ↗</h3><p class="mut desc">{r.description}</p><div class="meta">{r.language && <span class="tag">{r.language}</span>}{r.lastCommitAt && <span class="mut when">Last commit {formatDate(r.lastCommitAt)}</span>}</div></a>)}</div>
+
+<h2 class="reveal sec">Outside work</h2>
+<div class="out">{now.outside.map(o=><div class="card reveal"><h3>{o.title}</h3>{o.detail && <p class="mut" style="margin:6px 0 0">{o.detail}</p>}{o.items && <ul class="items" lang={o.lang}>{o.items.map(i=><li><span class="nm">{i.name}</span><span class="mut by">{i.by}</span>{i.note && <span class="mut nt" lang="en">{i.note}</span>}</li>)}</ul>}</div>)}</div>
+<style>.upd{margin:0;font-size:.95rem}.sec{margin:56px 0 20px}.act{display:flex;flex-wrap:wrap;gap:32px 56px;align-items:center}.act:hover{transform:none}.stats{display:flex;flex-direction:column;gap:18px}.stats div{display:flex;flex-direction:column}.stats strong{font-size:2rem;line-height:1.1;letter-spacing:-.02em}.stats span{font-size:.9rem}.act :global(.graph){min-width:0;max-width:100%}.cap{margin:12px 0 0;font-size:.88rem}.repos{margin-top:20px}.repos h3{color:var(--fg)}.desc{margin:6px 0 14px}.meta{display:flex;flex-wrap:wrap;align-items:center;gap:8px}.meta .tag{margin:0}.when{font-size:.85rem}.out{display:grid;gap:20px;grid-template-columns:repeat(2,1fr)}.items{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:12px}.items li{display:flex;flex-direction:column}.nm{font-weight:500}.by{font-size:.92rem}.nt{font-size:.85rem;font-style:italic}@media(max-width:760px){.out{grid-template-columns:1fr}}</style>
+</Base>

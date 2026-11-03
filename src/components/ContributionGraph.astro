@@ -1,0 +1,47 @@
+---
+// Static contribution calendar: weeks as columns, Sunday at the top, like GitHub's.
+const { days, total } = Astro.props;
+const CELL = 15, GAP = 3, STEP = CELL + GAP, LEFT = 30, TOP = 20;
+
+const dateOf = (iso) => new Date(`${iso}T00:00:00Z`);
+const format = (d, opts) => d.toLocaleDateString('en-GB', { timeZone: 'UTC', ...opts });
+
+let column = 0;
+const cells = days.map((day, i) => {
+  const date = dateOf(day.date);
+  const row = date.getUTCDay();
+  if (i > 0 && row === 0) column += 1;
+  const when = format(date, { day: 'numeric', month: 'short', year: 'numeric' });
+  const label = `${day.count} ${day.count === 1 ? 'contribution' : 'contributions'} on ${when}`;
+  return { x: LEFT + column * STEP, y: TOP + row * STEP, level: day.level, label };
+});
+
+// Label each month at its first full week so labels don't collide.
+const months = [];
+let seen = null;
+let col = 0;
+days.forEach((day, i) => {
+  const date = dateOf(day.date);
+  if (i > 0 && date.getUTCDay() === 0) col += 1;
+  const key = day.date.slice(0, 7);
+  if (key !== seen && (date.getUTCDate() <= 7 || i === 0)) {
+    seen = key;
+    months.push({ x: LEFT + col * STEP, label: format(date, { month: 'short' }) });
+  }
+});
+
+// Extra room on the right so a month label on the last column isn't clipped.
+const width = LEFT + (column + 1) * STEP + 12;
+const height = TOP + 7 * STEP;
+const first = format(dateOf(days[0].date), { month: 'long', year: 'numeric' });
+const summary = `Contribution graph showing ${total} contributions since ${first}.`;
+---
+<div class="graph" tabindex="0" role="group" aria-label="Contribution graph, scrollable">
+<svg viewBox={`0 0 ${width} ${height}`} width={width} height={height} role="img" aria-label={summary}>
+{months.map(m=><text x={m.x} y="11" class="lab">{m.label}</text>)}
+<text x="0" y={TOP + STEP + 11} class="lab day">Mon</text><text x="0" y={TOP + 3 * STEP + 11} class="lab day">Wed</text><text x="0" y={TOP + 5 * STEP + 11} class="lab day">Fri</text>
+{cells.map(c=><rect x={c.x} y={c.y} width={CELL} height={CELL} rx="3" class={`l${c.level}`}><title>{c.label}</title></rect>)}
+</svg>
+</div>
+<script>document.querySelectorAll('.graph').forEach((g) => { g.scrollLeft = g.scrollWidth; });</script>
+<style>.graph{overflow-x:auto;padding-bottom:4px}svg{display:block}.lab{font-size:10.5px;fill:var(--mut)}.l0{fill:var(--h0)}.l1{fill:var(--h1)}.l2{fill:var(--h2)}.l3{fill:var(--h3)}.l4{fill:var(--h4)}@media(max-width:640px){.day{display:none}}</style>
