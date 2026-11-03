@@ -1,6 +1,6 @@
 {
-  "fetchedAt": "2026-11-03T07:48:24.126Z",
-  "total": 90,
+  "fetchedAt": "2026-11-03T08:18:05.754Z",
+  "total": 91,
   "days": [
     {
       "date": "2026-08-01",
@@ -474,11 +474,18 @@
     },
     {
       "date": "2026-11-03",
-      "count": 3,
+      "count": 4,
       "level": 2
     }
   ],
   "repos": [
+    {
+      "name": "portfolio",
+      "description": "Josh Lim's personal portfolio site",
+      "url": "https://github.com/joshhlim/portfolio",
+      "language": "Astro",
+      "lastCommitAt": "2026-11-03T08:17:45Z"
+    },
     {
       "name": "Digital-namecard-template",
       "description": "A template for building your own digital name card from one config file, with a QR code, contact download and offline support.",
@@ -492,13 +499,6 @@
       "url": "https://github.com/joshhlim/gambrole",
       "language": "Python",
       "lastCommitAt": "2026-10-23T16:04:36Z"
-    },
-    {
-      "name": "portfolio",
-      "description": "Josh Lim's personal portfolio site",
-      "url": "https://github.com/joshhlim/portfolio",
-      "language": "Astro",
-      "lastCommitAt": "2026-10-14T03:54:16Z"
     }
   ]
 }
