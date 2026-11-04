@@ -1,10 +1,11 @@
 import type { APIRoute } from 'astro';
 import { streamText } from 'ai';
+import { google } from '@ai-sdk/google';
 import * as d from '../../data/site';
 
 export const prerender = false;
 
-const MODEL = process.env.AI_GATEWAY_MODEL || 'openai/gpt-4.1-nano';
+const MODEL = process.env.ASK_MODEL || 'gemini-3.5-flash-lite';
 const PAGES: Record<string, unknown> = {
   '/': { site: d.site, home: d.home },
   '/about': d.about,
@@ -53,17 +54,41 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
   if (!messages.length || messages[messages.length - 1].role !== 'user') return new Response('Bad request', { status: 400 });
   try {
     const result = streamText({
-      model: MODEL,
+      model: google(MODEL),
       system: SYSTEM,
       messages,
       maxOutputTokens: 350,
       temperature: 0.2,
-      providerOptions: { gateway: { models: ['google/gemini-2.5-flash-lite'] } },
-      onError: ({ error }) => console.error('ask error', error),
+      maxRetries: 1,
     });
-    return result.toTextStreamResponse({ headers: { 'cache-control': 'no-store' } });
+    // Peek until the first text arrives so provider failures become a proper 429 instead of an empty 200.
+    const it = result.fullStream[Symbol.asyncIterator]();
+    let first = '';
+    for (;;) {
+      const { done, value } = await it.next();
+      if (done) break;
+      if (value.type === 'error') throw value.error;
+      if (value.type === 'text-delta') { first = (value as any).text ?? (value as any).delta ?? ''; if (first) break; }
+    }
+    if (!first) return busy();
+    const enc = new TextEncoder();
+    const stream = new ReadableStream({
+      async start(c) {
+        c.enqueue(enc.encode(first));
+        try {
+          for (;;) {
+            const { done, value } = await it.next();
+            if (done) break;
+            if (value.type === 'text-delta') c.enqueue(enc.encode((value as any).text ?? (value as any).delta ?? ''));
+            if (value.type === 'error') break;
+          }
+        } catch (e) { console.error('ask stream error', e); }
+        c.close();
+      },
+    });
+    return new Response(stream, { headers: { 'content-type': 'text/plain; charset=utf-8', 'cache-control': 'no-store' } });
   } catch (e) {
-    console.error(e);
+    console.error('ask error', e);
     return busy();
   }
 };
