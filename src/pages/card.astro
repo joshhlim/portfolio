@@ -39,10 +39,23 @@ const qr=await QRCode.toString(cardUrl,{type:'svg',margin:1,errorCorrectionLevel
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script>
 const flip=document.getElementById('flip'),front=document.getElementById('front'),back=document.getElementById('back'),toqr=document.getElementById('toqr'),tofront=document.getElementById('tofront');
-function set(q){flip.classList.toggle('flipped',q);back.toggleAttribute('inert',!q);front.toggleAttribute('inert',q);back.setAttribute('aria-hidden',String(!q));front.setAttribute('aria-hidden',String(q));toqr.setAttribute('aria-expanded',String(q));(q?tofront:toqr).focus({preventScroll:true});}
+let angle=0;
+function set(q,dir){if(flip.classList.contains('flipped')!==q){angle+=(dir||(q?-1:1))*180;flip.style.setProperty('--a',angle+'deg')}flip.classList.toggle('flipped',q);back.toggleAttribute('inert',!q);front.toggleAttribute('inert',q);back.setAttribute('aria-hidden',String(!q));front.setAttribute('aria-hidden',String(q));toqr.setAttribute('aria-expanded',String(q));(q?tofront:toqr).focus({preventScroll:true});}
 toqr.addEventListener('click',()=>set(true));tofront.addEventListener('click',()=>set(false));
 back.addEventListener('click',e=>{if(e.target===back||e.target.closest('.qr'))set(false)});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&flip.classList.contains('flipped'))set(false)});
+// Swipe to flip, matching the old card: touch/pen only (mice keep text selection),
+// starts once a drag is clearly horizontal; vertical drags scroll (touch-action:pan-y).
+const reduce=matchMedia('(prefers-reduced-motion: reduce)');let drag=null,swiped=0;
+function endDrag(){flip.classList.remove('dragging');flip.style.setProperty('--a',angle+'deg');drag=null}
+flip.addEventListener('pointerdown',e=>{if(e.pointerType==='mouse')return;drag={x:e.clientX,y:e.clientY,t:e.timeStamp,dx:0,turn:0,on:false}});
+flip.addEventListener('pointermove',e=>{if(!drag)return;const dx=e.clientX-drag.x;
+ if(!drag.on){if(Math.abs(dx)<10||Math.abs(dx)<Math.abs(e.clientY-drag.y)*1.5)return;drag.on=true;try{flip.setPointerCapture(e.pointerId)}catch(_){}flip.classList.add('dragging')}
+ drag.dx=dx;drag.turn=Math.max(-180,Math.min(180,dx/flip.offsetWidth*180));if(!reduce.matches)flip.style.setProperty('--a',(angle+drag.turn)+'deg')});
+flip.addEventListener('pointerup',e=>{if(!drag)return;const{dx,turn,t,on}=drag;const v=Math.abs(dx)/Math.max(1,e.timeStamp-t);endDrag();
+ if(on){swiped=Date.now();if(Math.abs(turn)>60||v>0.5)set(!flip.classList.contains('flipped'),dx<0?-1:1)}});
+flip.addEventListener('pointercancel',()=>{if(drag)endDrag()});
+flip.addEventListener('click',e=>{if(Date.now()-swiped<400){e.preventDefault();e.stopPropagation()}},true);
 const url='https://joshlim.vercel.app/card',toast=document.getElementById('toast');let t;
 function show(m){toast.textContent=m;toast.classList.add('on');clearTimeout(t);t=setTimeout(()=>toast.classList.remove('on'),2200)}
 document.getElementById('share').addEventListener('click',async()=>{
@@ -51,10 +64,10 @@ document.getElementById('share').addEventListener('click',async()=>{
 });
 </script>
 <style>
-.flip{max-width:420px;margin:0 auto;display:grid;perspective:1600px}
+.flip{--a:0deg;max-width:420px;margin:0 auto;display:grid;perspective:1600px;touch-action:pan-y}
 .face{grid-area:1/1;backface-visibility:hidden;-webkit-backface-visibility:hidden;transition:transform .6s cubic-bezier(.2,.7,.2,1);width:100%}
-.back{transform:rotateY(180deg);display:flex;align-items:center}
-.flip.flipped .front{transform:rotateY(-180deg)}.flip.flipped .back{transform:rotateY(0)}
+.front{transform:rotateY(var(--a))}.back{transform:rotateY(calc(var(--a) + 180deg));display:flex;align-items:center}
+.flip.dragging .face{transition:none}
 .qrb{width:100%;text-align:center;display:grid;gap:14px;justify-items:center}
 .qrh{margin:0}.qr{background:#fff;padding:14px;border-radius:16px;width:min(280px,80%)}.qr :global(svg){display:block;width:100%;height:auto}.qru{margin:0}
 .nc-row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.nc-row2 .btn{font:inherit;cursor:pointer}#tofront{font:inherit;cursor:pointer}
