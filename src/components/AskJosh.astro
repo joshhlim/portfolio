@@ -15,8 +15,10 @@ const chips = ["What's Josh's tech stack?", 'What certifications does he have?',
     <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></form>
 </section>
 <script>
-const fab = document.querySelector<HTMLButtonElement>('.aj-fab')!;
-const panel = document.getElementById('aj-panel')!;
+const fab = document.querySelector<HTMLButtonElement>('.aj-fab');
+const panel = document.getElementById('aj-panel');
+if (fab && panel) initAsk(fab, panel);
+function initAsk(fab: HTMLButtonElement, panel: HTMLElement) {
 const log = panel.querySelector<HTMLDivElement>('.aj-log')!;
 const form = panel.querySelector<HTMLFormElement>('.aj-form')!;
 const input = form.querySelector<HTMLInputElement>('input')!;
@@ -78,6 +80,7 @@ async function ask(q: string) {
 }
 form.addEventListener('submit', e => { e.preventDefault(); ask(input.value); });
 panel.querySelectorAll<HTMLButtonElement>('.aj-chip').forEach(b => b.addEventListener('click', () => ask(b.textContent || '')));
+}
 </script>
 <style is:global>
 .aj-fab{position:fixed;right:24px;bottom:24px;z-index:40;width:52px;height:52px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--line);background:var(--card);color:var(--acc);box-shadow:0 8px 24px var(--shadow);cursor:pointer;transition:transform .2s}
