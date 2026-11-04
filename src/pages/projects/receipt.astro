@@ -71,6 +71,7 @@ $('rx-copy').addEventListener('click', async () => {
 });
 </script>
 <style>
+.ph[hidden]{display:none}
 .eyebrow a{color:var(--mut);font-size:.9rem}.lead{margin:-4px 0 28px}
 .rx{display:grid;grid-template-columns:1fr 1.2fr;gap:20px;align-items:start;margin-bottom:56px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px}
@@ -83,8 +84,8 @@ $('rx-copy').addEventListener('click', async () => {
 .empty{margin:0}.err{color:var(--dev-fg)}
 .meta{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:12px}.meta span{color:var(--mut);font-size:.9rem}
 table{width:100%;border-collapse:collapse;font-size:.92rem}th{text-align:left;color:var(--mut);font-weight:500;font-size:.8rem}
-th,td{padding:7px 4px;border-bottom:1px solid var(--line)}th:nth-child(n+2),td:nth-child(n+2){text-align:right;white-space:nowrap}
-tfoot td{font-weight:600;border-bottom:0}tfoot tr:last-child td{font-size:1rem}
+:global(.rx-out th),:global(.rx-out td){padding:7px 4px;border-bottom:1px solid var(--line)}:global(.rx-out th:nth-child(n+2)),:global(.rx-out td:nth-child(n+2)),:global(.rx-out tfoot td:last-child){text-align:right;white-space:nowrap}
+:global(.rx-out tfoot td){font-weight:600;border-bottom:0}:global(.rx-out tfoot tr:last-child td){font-size:1rem}:global(.rx-out td.mut){color:var(--mut)}
 @media(max-width:760px){.rx{grid-template-columns:1fr}.drop{min-height:180px}}
 </style>
 </Base>
