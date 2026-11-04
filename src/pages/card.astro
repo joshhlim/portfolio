@@ -1,9 +1,13 @@
 ---
 import Base from '../layouts/Base.astro';
 import { site, card } from '../data/site';
+import QRCode from 'qrcode';
+const cardUrl='https://joshlim.vercel.app/card';
+const qr=await QRCode.toString(cardUrl,{type:'svg',margin:1,errorCorrectionLevel:'M',color:{dark:'#000000',light:'#ffffff'}});
 ---
 <Base title="Card" description={`${site.name}, ${card.title} at ${card.org}. ${site.tagline}`} bare>
-<div class="nc">
+<div class="flip" id="flip">
+<div class="nc face front" id="front">
   <div class="nc-photo"><img src={card.photo} alt={site.name} width="320" height="320"/></div>
   <div class="nc-body">
     <div class="nc-id">
@@ -18,12 +22,47 @@ import { site, card } from '../data/site';
     <div class="nc-links">{card.links.map(l=> <a class="btn ghost" href={l.url}>{l.label}</a>)}</div>
     <div class="nc-actions">
       <a class="btn" href={card.vcf} download="Josh Lim.vcf">Save contact</a>
+      <div class="nc-row2"><button type="button" class="btn ghost" id="share">Share</button><button type="button" class="btn ghost" id="toqr" aria-controls="back" aria-expanded="false">QR code</button></div>
       <a class="btn ghost" href="/">See my work →</a>
     </div>
   </div>
 </div>
+<div class="nc face back" id="back" aria-hidden="true" inert>
+  <div class="nc-body qrb">
+    <h2 class="qrh">Scan to open my card</h2>
+    <div class="qr" role="img" aria-label={`QR code linking to ${cardUrl}`} set:html={qr}></div>
+    <p class="mut qru">joshlim.vercel.app/card</p>
+    <button type="button" class="btn" id="tofront" aria-controls="front">Back to card</button>
+  </div>
+</div>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script>
+const flip=document.getElementById('flip'),front=document.getElementById('front'),back=document.getElementById('back'),toqr=document.getElementById('toqr'),tofront=document.getElementById('tofront');
+function set(q){flip.classList.toggle('flipped',q);back.toggleAttribute('inert',!q);front.toggleAttribute('inert',q);back.setAttribute('aria-hidden',String(!q));front.setAttribute('aria-hidden',String(q));toqr.setAttribute('aria-expanded',String(q));(q?tofront:toqr).focus({preventScroll:true});}
+toqr.addEventListener('click',()=>set(true));tofront.addEventListener('click',()=>set(false));
+back.addEventListener('click',e=>{if(e.target===back||e.target.closest('.qr'))set(false)});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&flip.classList.contains('flipped'))set(false)});
+const url='https://joshlim.vercel.app/card',toast=document.getElementById('toast');let t;
+function show(m){toast.textContent=m;toast.classList.add('on');clearTimeout(t);t=setTimeout(()=>toast.classList.remove('on'),2200)}
+document.getElementById('share').addEventListener('click',async()=>{
+ if(navigator.share){try{await navigator.share({title:'Josh Lim',text:'My digital card',url});return}catch(e){if(e&&e.name==='AbortError')return}}
+ try{await navigator.clipboard.writeText(url);show('Copied')}catch(e){const i=document.createElement('textarea');i.value=url;document.body.appendChild(i);i.select();try{document.execCommand('copy');show('Copied')}catch(_){show(url)}i.remove()}
+});
+</script>
 <style>
-.nc{max-width:420px;margin:0 auto;background:var(--card);border:1px solid var(--line);border-radius:20px;overflow:hidden;box-shadow:0 12px 30px -12px var(--shadow)}
+.flip{max-width:420px;margin:0 auto;display:grid;perspective:1600px}
+.face{grid-area:1/1;backface-visibility:hidden;-webkit-backface-visibility:hidden;transition:transform .6s cubic-bezier(.2,.7,.2,1);width:100%}
+.back{transform:rotateY(180deg);display:flex;align-items:center}
+.flip.flipped .front{transform:rotateY(-180deg)}.flip.flipped .back{transform:rotateY(0)}
+.qrb{width:100%;text-align:center;display:grid;gap:14px;justify-items:center}
+.qrh{margin:0}.qr{background:#fff;padding:14px;border-radius:16px;width:min(280px,80%)}.qr :global(svg){display:block;width:100%;height:auto}.qru{margin:0}
+.nc-row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.nc-row2 .btn{font:inherit;cursor:pointer}#tofront{font:inherit;cursor:pointer}
+.toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,20px);background:var(--fg);color:var(--bg);padding:10px 18px;border-radius:999px;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;font-weight:600}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+@media (prefers-reduced-motion:reduce){.face{transition:none}.toast{transition:none}.face{backface-visibility:visible}.flip .back{visibility:hidden}.flip.flipped .back{visibility:visible}.flip.flipped .front{visibility:hidden}}
+
+.nc{background:var(--card);border:1px solid var(--line);border-radius:20px;overflow:hidden;box-shadow:0 12px 30px -12px var(--shadow)}
 .nc-photo{background:#0a0a0a;aspect-ratio:4/3;overflow:hidden}.nc-photo img{width:100%;height:100%;object-fit:cover;object-position:50% 25%;display:block}
 .nc-body{padding:22px}.nc-id{display:flex;justify-content:space-between;align-items:center;gap:12px}
 h1{font-size:2rem;margin:0}.nc-title{margin:0;color:var(--acc);font-weight:600}.nc-logo{height:48px;width:auto;background:#fff;border-radius:8px;padding:4px}
