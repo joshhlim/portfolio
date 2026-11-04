@@ -2,10 +2,13 @@
 import Base from '../layouts/Base.astro';
 import { site, card } from '../data/site';
 import QRCode from 'qrcode';
+const icons:Record<string,string>={linkedin: '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="currentColor"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg>', github: '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="currentColor"><path d="M12 .3a12 12 0 0 0-3.8 23.38c.6.12.83-.26.83-.57v-2c-3.34.72-4.04-1.6-4.04-1.6-.55-1.4-1.34-1.77-1.34-1.77-1.08-.74.09-.73.09-.73 1.2.09 1.83 1.24 1.83 1.24 1.07 1.83 2.8 1.3 3.49 1 .1-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.14-.3-.54-1.52.1-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.28-1.55 3.29-1.23 3.29-1.23.64 1.66.24 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.8 5.63-5.48 5.92.42.36.81 1.1.81 2.22v3.29c0 .32.21.7.82.58A12 12 0 0 0 12 .3"/></svg>'};
+const shareIcon='<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M16 6l-4-4-4 4"/><path d="M12 2v13"/></svg>';
 const cardUrl='https://joshlim.vercel.app/card';
 const qr=await QRCode.toString(cardUrl,{type:'svg',margin:1,errorCorrectionLevel:'M',color:{dark:'#000000',light:'#ffffff'}});
 ---
 <Base title="Card" description={`${site.name}, ${card.title} at ${card.org}. ${site.tagline}`} bare>
+<div class="nc-bar"><a class="btn" href={card.vcf} download="Josh Lim.vcf">Save contact</a><button type="button" class="btn ghost ico" id="share" aria-label="Share my card" set:html={shareIcon}></button><div class="dots" role="group" aria-label="Card side"><button type="button" class="dot" data-side="0" aria-label="Front of card" aria-pressed="true"></button><button type="button" class="dot" data-side="1" aria-label="QR code side" aria-pressed="false"></button></div></div>
 <div class="flip" id="flip">
 <div class="nc face front" id="front">
   <div class="nc-photo"><img src={card.photo} alt={site.name} width="320" height="320"/></div>
@@ -19,10 +22,8 @@ const qr=await QRCode.toString(cardUrl,{type:'svg',margin:1,errorCorrectionLevel
     <h2>Email</h2>
     <ul class="nc-rows">{card.emails.map(e=> <li><a href={`mailto:${e.value}`}><span class="mut">{e.label}</span><span>{e.value}</span></a></li>)}</ul>
     <h2>Links</h2>
-    <div class="nc-links">{card.links.map(l=> <a class="btn ghost" href={l.url}>{l.label}</a>)}</div>
+    <div class="nc-links">{card.links.map(l=> <a class="btn ghost ico" href={l.url} aria-label={l.label} title={l.label} set:html={icons[l.label.toLowerCase()] ?? l.label}></a>)}</div>
     <div class="nc-actions">
-      <a class="btn" href={card.vcf} download="Josh Lim.vcf">Save contact</a>
-      <div class="nc-row2"><button type="button" class="btn ghost" id="share">Share</button><button type="button" class="btn ghost" id="toqr" aria-controls="back" aria-expanded="false">QR code</button></div>
       <a class="btn ghost" href="/">See my work →</a>
     </div>
   </div>
@@ -32,16 +33,15 @@ const qr=await QRCode.toString(cardUrl,{type:'svg',margin:1,errorCorrectionLevel
     <h2 class="qrh">Scan to open my card</h2>
     <div class="qr" role="img" aria-label={`QR code linking to ${cardUrl}`} set:html={qr}></div>
     <p class="mut qru">joshlim.vercel.app/card</p>
-    <button type="button" class="btn" id="tofront" aria-controls="front">Back to card</button>
   </div>
 </div>
 </div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script>
-const flip=document.getElementById('flip'),front=document.getElementById('front'),back=document.getElementById('back'),toqr=document.getElementById('toqr'),tofront=document.getElementById('tofront');
+const flip=document.getElementById('flip'),front=document.getElementById('front'),back=document.getElementById('back'),dots=[...document.querySelectorAll('.dot')];
 let angle=0;
-function set(q,dir){if(flip.classList.contains('flipped')!==q){angle+=(dir||(q?-1:1))*180;flip.style.setProperty('--a',angle+'deg')}flip.classList.toggle('flipped',q);back.toggleAttribute('inert',!q);front.toggleAttribute('inert',q);back.setAttribute('aria-hidden',String(!q));front.setAttribute('aria-hidden',String(q));toqr.setAttribute('aria-expanded',String(q));(q?tofront:toqr).focus({preventScroll:true});}
-toqr.addEventListener('click',()=>set(true));tofront.addEventListener('click',()=>set(false));
+function set(q,dir){if(flip.classList.contains('flipped')!==q){angle+=(dir||(q?-1:1))*180;flip.style.setProperty('--a',angle+'deg')}flip.classList.toggle('flipped',q);back.toggleAttribute('inert',!q);front.toggleAttribute('inert',q);back.setAttribute('aria-hidden',String(!q));front.setAttribute('aria-hidden',String(q));dots.forEach((d,i)=>d.setAttribute('aria-pressed',String((i===1)===q)));}
+dots.forEach((d,i)=>d.addEventListener('click',()=>set(i===1)));
 back.addEventListener('click',e=>{if(e.target===back||e.target.closest('.qr'))set(false)});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&flip.classList.contains('flipped'))set(false)});
 // Swipe to flip, matching the old card: touch/pen only (mice keep text selection),
@@ -64,13 +64,22 @@ document.getElementById('share').addEventListener('click',async()=>{
 });
 </script>
 <style>
+.nc-bar{position:sticky;top:0;z-index:20;max-width:420px;margin:-14px auto 8px;display:flex;flex-wrap:wrap;gap:10px;padding:10px 0 0;background:var(--bg)}
+@media (max-width:640px){.nc-bar{padding-right:44px}:global(body.bare .nav){z-index:40}:global(body.bare .theme){position:fixed;top:15px;right:12px}}
+.nc-bar .btn:first-child{flex:1;text-align:center}
+.ico{display:inline-flex;align-items:center;justify-content:center;width:46px;height:46px;padding:0;cursor:pointer;font:inherit}
+.dots{flex-basis:100%;display:flex;justify-content:center;gap:4px;margin:-4px 0 0}
+.dot{width:24px;height:24px;padding:0;border:0;background:none;cursor:pointer;display:grid;place-items:center}
+.dot::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--line);transition:background .2s,transform .2s}
+.dot[aria-pressed="true"]::before{background:var(--acc);transform:scale(1.25)}
+@media (prefers-reduced-motion:reduce){.dot::before{transition:none}}
+
 .flip{--a:0deg;max-width:420px;margin:0 auto;display:grid;perspective:1600px;touch-action:pan-y}
 .face{grid-area:1/1;backface-visibility:hidden;-webkit-backface-visibility:hidden;transition:transform .6s cubic-bezier(.2,.7,.2,1);width:100%}
 .front{transform:rotateY(var(--a))}.back{transform:rotateY(calc(var(--a) + 180deg));display:flex;align-items:center}
 .flip.dragging .face{transition:none}
 .qrb{width:100%;text-align:center;display:grid;gap:14px;justify-items:center}
 .qrh{margin:0}.qr{background:#fff;padding:14px;border-radius:16px;width:min(280px,80%)}.qr :global(svg){display:block;width:100%;height:auto}.qru{margin:0}
-.nc-row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.nc-row2 .btn{font:inherit;cursor:pointer}#tofront{font:inherit;cursor:pointer}
 .toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,20px);background:var(--fg);color:var(--bg);padding:10px 18px;border-radius:999px;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;font-weight:600}
 .toast.on{opacity:1;transform:translate(-50%,0)}
 @media (prefers-reduced-motion:reduce){.face{transition:none}.toast{transition:none}.face{backface-visibility:visible}.flip .back{visibility:hidden}.flip.flipped .back{visibility:visible}.flip.flipped .front{visibility:hidden}}
