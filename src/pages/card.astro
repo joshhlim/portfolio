@@ -8,7 +8,6 @@ const cardUrl='https://joshlim.vercel.app/card';
 const qr=await QRCode.toString(cardUrl,{type:'svg',margin:1,errorCorrectionLevel:'M',color:{dark:'#000000',light:'#ffffff'}});
 ---
 <Base title="Card" description={`${site.name}, ${card.title} at ${card.org}. ${site.tagline}`} bare>
-<div class="nc-bar"><a class="btn" href={card.vcf} download="Josh Lim.vcf">Save contact</a><button type="button" class="btn ghost ico" id="share" aria-label="Share my card" set:html={shareIcon}></button><div class="dots" role="group" aria-label="Card side"><button type="button" class="dot" data-side="0" aria-label="Front of card" aria-pressed="true"></button><button type="button" class="dot" data-side="1" aria-label="QR code side" aria-pressed="false"></button></div></div>
 <div class="flip" id="flip">
 <div class="nc face front" id="front">
   <div class="nc-photo"><img src={card.photo} alt={site.name} width="320" height="320"/></div>
@@ -36,6 +35,7 @@ const qr=await QRCode.toString(cardUrl,{type:'svg',margin:1,errorCorrectionLevel
   </div>
 </div>
 </div>
+<div class="nc-float"><div class="dots" role="group" aria-label="Card side"><button type="button" class="dot" data-side="0" aria-label="Front of card" aria-pressed="true"></button><button type="button" class="dot" data-side="1" aria-label="QR code side" aria-pressed="false"></button></div><div class="nc-bar"><a class="btn" href={card.vcf} download="Josh Lim.vcf">Save contact</a><button type="button" class="btn ghost ico" id="share" aria-label="Share my card" set:html={shareIcon}></button></div></div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script>
 const flip=document.getElementById('flip'),front=document.getElementById('front'),back=document.getElementById('back'),dots=[...document.querySelectorAll('.dot')];
@@ -64,11 +64,14 @@ document.getElementById('share').addEventListener('click',async()=>{
 });
 </script>
 <style>
-.nc-bar{position:sticky;top:0;z-index:20;max-width:420px;margin:-14px auto 8px;display:flex;flex-wrap:wrap;gap:10px;padding:10px 0 0;background:var(--bg)}
-@media (max-width:640px){.nc-bar{padding-right:44px}:global(body.bare .nav){z-index:40}:global(body.bare .theme){position:fixed;top:15px;right:12px}}
+.nc-float{position:fixed;z-index:20;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));width:min(388px,calc(100% - 32px));display:grid;justify-items:center;gap:8px;pointer-events:none}
+.nc-bar{width:100%;display:flex;gap:10px}
+.nc-bar>*{pointer-events:auto;box-shadow:0 8px 24px -6px rgba(0,0,0,.45),0 2px 6px rgba(0,0,0,.2)}
+.nc-bar .ico{background:var(--card);color:var(--fg);border:1px solid var(--line)}
+:global(body.bare main.wrap){padding-bottom:calc(130px + env(safe-area-inset-bottom,0px))}
 .nc-bar .btn:first-child{flex:1;text-align:center}
 .ico{display:inline-flex;align-items:center;justify-content:center;width:46px;height:46px;padding:0;cursor:pointer;font:inherit}
-.dots{flex-basis:100%;display:flex;justify-content:center;gap:4px;margin:-4px 0 0}
+.dots{pointer-events:auto;display:flex;gap:2px;padding:0 6px;border-radius:999px;background:color-mix(in srgb,var(--card) 80%,transparent);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);box-shadow:0 2px 8px rgba(0,0,0,.2)}
 .dot{width:24px;height:24px;padding:0;border:0;background:none;cursor:pointer;display:grid;place-items:center}
 .dot::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--line);transition:background .2s,transform .2s}
 .dot[aria-pressed="true"]::before{background:var(--acc);transform:scale(1.25)}
@@ -76,9 +79,9 @@ document.getElementById('share').addEventListener('click',async()=>{
 
 .flip{--a:0deg;max-width:420px;margin:0 auto;display:grid;perspective:1600px;touch-action:pan-y}
 .face{grid-area:1/1;backface-visibility:hidden;-webkit-backface-visibility:hidden;transition:transform .6s cubic-bezier(.2,.7,.2,1);width:100%}
-.front{transform:rotateY(var(--a))}.back{transform:rotateY(calc(var(--a) + 180deg));display:flex;align-items:center}
+.front{transform:rotateY(var(--a))}.back{transform:rotateY(calc(var(--a) + 180deg));display:flex;align-items:flex-start}
 .flip.dragging .face{transition:none}
-.qrb{width:100%;text-align:center;display:grid;gap:14px;justify-items:center}
+.qrb{width:100%;padding-top:40px;text-align:center;display:grid;gap:14px;justify-items:center}
 .qrh{margin:0}.qr{background:#fff;padding:14px;border-radius:16px;width:min(280px,80%)}.qr :global(svg){display:block;width:100%;height:auto}.qru{margin:0}
 .toast{position:fixed;left:50%;bottom:28px;transform:translate(-50%,20px);background:var(--fg);color:var(--bg);padding:10px 18px;border-radius:999px;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;font-weight:600}
 .toast.on{opacity:1;transform:translate(-50%,0)}
