@@ -171,9 +171,17 @@ export const gambrole = {
 export const smallerBuilds = [
   {
     name: 'Ask Josh',
-    detail: 'An AI assistant on this site that answers questions about me using only the site content, with links to its sources. It streams answers through Vercel AI Gateway and is rate limited.',
-    tags: ['TypeScript', 'Astro', 'AI SDK', 'Vercel AI Gateway'],
+    detail: 'An AI assistant on this site that answers questions about me using only the site content, with links to its sources. It streams answers from Gemini and is rate limited.',
+    tags: ['TypeScript', 'Astro', 'AI SDK', 'Gemini'],
     liveUrl: '/#ask',
+    liveLabel: 'Try it',
+    repoUrl: 'https://github.com/joshhlim/portfolio',
+  },
+  {
+    name: 'Receipt extractor',
+    detail: 'Upload a photo of a receipt and get clean structured data back: merchant, date, items and totals as JSON. Runs on Gemini with a schema; nothing is stored.',
+    tags: ['TypeScript', 'Astro', 'AI SDK', 'Gemini'],
+    liveUrl: '/projects/receipt',
     liveLabel: 'Try it',
     repoUrl: 'https://github.com/joshhlim/portfolio',
   },
