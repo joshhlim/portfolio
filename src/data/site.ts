@@ -238,3 +238,21 @@ export const contact = {
     { label: 'Email', value: 'joshhlim2606@gmail.com', url: 'mailto:joshhlim2606@gmail.com' },
   ],
 };
+
+/* ---------- Digital card (/card), details from the original joshlim.pages.dev card ---------- */
+
+export const card = {
+  title: 'AI Engineer',
+  org: 'National University Health System (NUHS)',
+  photo: '/img/photo.jpg',
+  logo: '/img/nuhs-logo.png',
+  vcf: '/josh-lim.vcf',
+  emails: [
+    { label: 'NUHS', value: 'josh_lim@nuhs.edu.sg' },
+    { label: 'Personal', value: 'joshhlim2606@gmail.com' },
+  ],
+  links: [
+    { label: 'LinkedIn', url: 'https://www.linkedin.com/in/joshhlim' },
+    { label: 'GitHub', url: 'https://github.com/joshhlim' },
+  ],
+};
