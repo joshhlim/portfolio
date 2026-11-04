@@ -170,6 +170,14 @@ export const gambrole = {
 
 export const smallerBuilds = [
   {
+    name: 'Ask Josh',
+    detail: 'An AI assistant on this site that answers questions about me using only the site content, with links to its sources. It streams answers through Vercel AI Gateway and is rate limited.',
+    tags: ['TypeScript', 'Astro', 'AI SDK', 'Vercel AI Gateway'],
+    liveUrl: '/#ask',
+    liveLabel: 'Try it',
+    repoUrl: 'https://github.com/joshhlim/portfolio',
+  },
+  {
     name: 'Digital name card template',
     detail: 'A template for building your own digital name card, with a step-by-step guide so no coding is needed. It includes a QR code, contact download and offline support.',
     tags: ['JavaScript', 'HTML', 'CSS'],
