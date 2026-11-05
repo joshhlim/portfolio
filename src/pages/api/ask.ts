@@ -10,7 +10,7 @@ const PAGES: Record<string, unknown> = {
   '/': { site: d.site, home: d.home },
   '/about': d.about,
   '/experience': d.experience,
-  '/projects': { workProjects: d.workProjects, gambrole: d.gambrole, smallerBuilds: d.smallerBuilds },
+  '/projects': { workProjects: d.workProjects, gambrole: d.gambrole, wesplit: d.wesplit, smallerBuilds: d.smallerBuilds },
   '/now': d.now,
   '/contact': d.contact,
   '/card': d.card,

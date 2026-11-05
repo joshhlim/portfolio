@@ -19,7 +19,7 @@ export const pageDescriptions = {
   home: 'Josh Lim is an AI Engineer in Singapore who builds practical AI tools for healthcare and everyday work.',
   about: "Josh Lim's education, certifications, skills and interests. NUS Business Analytics graduate and AI Engineer in Singapore.",
   experience: "Josh Lim's work experience in AI engineering and risk analytics at Ng Teng Fong General Hospital, InsourceAI and ByteDance.",
-  projects: "Josh Lim's projects, including healthcare AI work at Ng Teng Fong General Hospital and GamBROle, a multiplayer score keeping app.",
+  projects: "Josh Lim's projects, including healthcare AI work at Ng Teng Fong General Hospital, GamBROle, a multiplayer score keeping app, and WeSplit, a bill splitting app.",
   now: 'What Josh Lim is building and learning right now, with recent GitHub activity.',
   contact: 'Get in touch with Josh Lim on LinkedIn, GitHub or email.',
 };
@@ -168,20 +168,20 @@ export const gambrole = {
   ],
 };
 
+export const wesplit = {
+  name: 'WeSplit',
+  summary: 'Snap a receipt, tap who had what, and send PayNow QRs. Handles SG service charge and GST.',
+  tags: ['Next.js', 'Gemini', 'PWA'],
+  liveUrl: 'https://wesplit-sg.vercel.app',
+  repoUrl: 'https://github.com/joshhlim/wesplit',
+};
+
 export const smallerBuilds = [
   {
     name: 'Ask Josh',
     detail: 'An AI assistant on this site that answers questions about me using only the site content, with links to its sources. It streams answers from Gemini and is rate limited.',
     tags: ['TypeScript', 'Astro', 'AI SDK', 'Gemini'],
     liveUrl: '/#ask',
-    liveLabel: 'Try it',
-    repoUrl: 'https://github.com/joshhlim/portfolio',
-  },
-  {
-    name: 'Receipt extractor',
-    detail: 'Upload a photo of a receipt and get clean structured data back: merchant, date, items and totals as JSON. Runs on Gemini with a schema; nothing is stored.',
-    tags: ['TypeScript', 'Astro', 'AI SDK', 'Gemini'],
-    liveUrl: '/projects/receipt',
     liveLabel: 'Try it',
     repoUrl: 'https://github.com/joshhlim/portfolio',
   },
@@ -208,6 +208,11 @@ export const now = {
       title: 'GamBROle',
       detail: 'Score keeping and settlements for Big Two (Taidi) and Mahjong nights.',
       url: 'https://github.com/joshhlim/gambrole',
+    },
+    {
+      title: 'WeSplit',
+      detail: 'Snap a receipt, tap who had what, and send PayNow QRs.',
+      url: 'https://wesplit-sg.vercel.app',
     },
     {
       title: 'Digital name card template',
