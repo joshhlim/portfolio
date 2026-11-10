@@ -1,0 +1,15 @@
+{
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "portfolio-delta-green-t9mnmnxfan.vercel.app"
+        }
+      ],
+      "destination": "https://joshlim.vercel.app/$1",
+      "permanent": true
+    }
+  ]
+}
