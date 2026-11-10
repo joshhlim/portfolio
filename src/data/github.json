@@ -1,6 +1,6 @@
 {
-  "fetchedAt": "2026-11-10T01:06:31.346Z",
-  "total": 120,
+  "fetchedAt": "2026-11-10T22:45:14.778Z",
+  "total": 126,
   "days": [
     {
       "date": "2026-08-01",
@@ -140,7 +140,7 @@
     {
       "date": "2026-08-28",
       "count": 3,
-      "level": 2
+      "level": 1
     },
     {
       "date": "2026-08-29",
@@ -175,7 +175,7 @@
     {
       "date": "2026-09-04",
       "count": 6,
-      "level": 3
+      "level": 2
     },
     {
       "date": "2026-09-05",
@@ -195,7 +195,7 @@
     {
       "date": "2026-09-08",
       "count": 8,
-      "level": 4
+      "level": 3
     },
     {
       "date": "2026-09-09",
@@ -270,7 +270,7 @@
     {
       "date": "2026-09-23",
       "count": 6,
-      "level": 3
+      "level": 2
     },
     {
       "date": "2026-09-24",
@@ -305,7 +305,7 @@
     {
       "date": "2026-09-30",
       "count": 3,
-      "level": 2
+      "level": 1
     },
     {
       "date": "2026-10-01",
@@ -345,7 +345,7 @@
     {
       "date": "2026-10-08",
       "count": 3,
-      "level": 2
+      "level": 1
     },
     {
       "date": "2026-10-09",
@@ -375,7 +375,7 @@
     {
       "date": "2026-10-14",
       "count": 6,
-      "level": 3
+      "level": 2
     },
     {
       "date": "2026-10-15",
@@ -509,24 +509,24 @@
     },
     {
       "date": "2026-11-10",
-      "count": 0,
-      "level": 0
+      "count": 6,
+      "level": 2
     }
   ],
   "repos": [
-    {
-      "name": "wesplit",
-      "description": "Scan a receipt, split the bill, PayNow your friends",
-      "url": "https://github.com/joshhlim/wesplit",
-      "language": "TypeScript",
-      "lastCommitAt": "2026-11-06T08:34:06Z"
-    },
     {
       "name": "portfolio",
       "description": "Josh Lim's personal portfolio site",
       "url": "https://github.com/joshhlim/portfolio",
       "language": "Astro",
-      "lastCommitAt": "2026-11-05T02:24:52Z"
+      "lastCommitAt": "2026-11-10T04:05:38Z"
+    },
+    {
+      "name": "wesplit",
+      "description": "Scan a receipt, split the bill, PayNow your friends",
+      "url": "https://github.com/joshhlim/wesplit",
+      "language": "TypeScript",
+      "lastCommitAt": "2026-11-10T03:36:51Z"
     },
     {
       "name": "Digital-namecard-template",
